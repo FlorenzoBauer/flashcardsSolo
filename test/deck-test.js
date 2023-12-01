@@ -1,8 +1,8 @@
 const chai = require('chai');
 const expect = chai.expect;
 
-const { createCard } = require('../src/Card');
-const { createDeck, countCards } = require('../src/Deck');
+const { createCard } = require('../src/card');
+const { createDeck, countCards } = require('../src/deck');
 
 describe('deck', function() {
   let card1, card2, card3, cards, deck;

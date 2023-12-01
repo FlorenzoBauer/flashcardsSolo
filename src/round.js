@@ -1,31 +1,34 @@
 function createRound(deck) {
   return {
     deck,
-    currentCard: 0,
-    turns: 0,
+    currentCard: deck.cards[0],
+    turn: 0,
     incorrectGuesses: [],
-    takeTurn(guess) {
-      this.turns++;
-      const currentCard = this.deck.cards[this.currentCard];
-      if (guess === currentCard.correctAnswer) {
-        // Move to the next card
-        this.currentCard++;
-        return 'correct!';
-      } else {
-        // Store the incorrect guess (card id) in the array
-        this.incorrectGuesses.push(currentCard.id);
-
-        // Move to the next card
-        this.currentCard++;
-        return 'incorrect!';
-      }
-    },
+    
   }
 };
- 
+
+function takeTurn(id, round) {
+  round.turn++;
+
+  if (id === round.currentCard.correctAnswer) {
+    // If the answer is correct, move to the next card
+    round.currentCard = round.deck.cards[1]; // Replace with the logic to move to the next card
+    return 'correct!';
+  } else {
+    // If the answer is incorrect, store the incorrect guess (card id) in the array
+    round.incorrectGuesses.push(round.currentCard.id);
+
+    // Move to the next card
+    round.currentCard = round.deck.cards[1]; // Replace with the logic to move to the next card
+    return 'incorrect!';
+  }
+}
+
+
 function calculatePercentCorrect(round) {
-    const correctGuesses = round.turns - round.incorrectGuesses.length;
-    const percentCorrect = (correctGuesses / round.turns) * 100 || 0;
+    const correctGuesses = round.turn - round.incorrectGuesses.length;
+    const percentCorrect = (correctGuesses / round.turn) * 100 || 0;
     return percentCorrect.toFixed(2);
     }
     
@@ -36,6 +39,7 @@ function endRound(round) {
 
 module.exports = {
     createRound,
+    takeTurn,
     calculatePercentCorrect,
     endRound
 }

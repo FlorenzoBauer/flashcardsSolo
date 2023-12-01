@@ -1,9 +1,9 @@
 const chai = require('chai');
 const expect = chai.expect;
 
-const { createCard } = require('../src/Card');
-const { createDeck } = require('../src/Deck');
-const { createRound, calculatePercentCorrect, endRound } = require('../src/round');
+const { createCard } = require('../src/card');
+const { createDeck } = require('../src/deck');
+const { createRound, takeTurn, calculatePercentCorrect, endRound } = require('../src/round');
 
 describe('round', function() {
   let card1, card2, card3, cards, deck, round;
@@ -19,11 +19,24 @@ describe('round', function() {
 
   it('should start a round', function() {
     expect(round.deck).to.deep.equal(deck);
-    expect(round.currentCardIndex).to.equal(0);
-    expect(round.turns).to.equal(0);
+    expect(round.currentCard).to.equal(0);
+    expect(round.turn).to.equal(0);
     expect(round.incorrectGuesses).to.deep.equal([]);
   });
-
+  it('should take a turn', function() {
+    const turn = round.takeTurn('object');
+    expect(turn).to.equal('correct!');
+    expect(round.turn).to.equal(1);
+    expect(round.currentCard).to.equal(1);
+    expect(round.incorrectGuesses).to.deep.equal([]);
+  });
+  it('should be able to take multiple turns', function() {
+    round.takeTurn('object');
+    round.takeTurn('array');
+    expect(round.turn).to.equal(2);
+    expect(round.currentCard).to.equal(2);
+    expect(round.incorrectGuesses).to.deep.equal([]);
+  });
   it('should calculate the percent correct', function() {
     round.takeTurn('object');
     round.takeTurn('array');

@@ -5,6 +5,7 @@ function createDeck(cards) {
     };
   }
 function countCards(deck) {
+  console.log(deck.numberOfCards)
     return deck.numberOfCards;
 }
 module.exports = {
