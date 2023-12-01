@@ -13,7 +13,7 @@ function createRound(deck) {
     currentCard: deck.cards[0],
     turn: 0,
     incorrectGuesses: [],
-    incorrectCards: [],  // Initialize incorrectCards as an empty array
+    incorrectCards: [],
   };
 }
 
@@ -26,7 +26,6 @@ function takeTurn(id, round) {
     const nextIndex = (currentIndex + 1) % deckSize;
 
     if (nextIndex === round.deck.cards.length && round.incorrectCards.length > 0) {
-      // Completed the deck and incorrect cards, restart with the original deck
       round.deck.cards = [...round.deck.cards, ...round.incorrectCards];
       round.incorrectCards = [];
     }
@@ -35,14 +34,12 @@ function takeTurn(id, round) {
     return 'correct!';
   } else {
     round.incorrectGuesses.push(round.currentCard.id);
-    round.incorrectCards.push(round.currentCard); // Store the incorrect card
+    round.incorrectCards.push(round.currentCard);
 
     if (round.deck.cards.length > 1) {
-      // Move to the next card from the deck
       const nextIndex = (currentIndex + 1) % deckSize;
       round.currentCard = round.deck.cards[nextIndex];
     } else if (round.incorrectCards.length > 0) {
-      // No more deck cards, switch to incorrect cards
       round.deck.cards = [...round.incorrectCards];
       round.incorrectCards = [];
       round.currentCard = round.deck.cards[0];

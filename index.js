@@ -1,6 +1,3 @@
-// This is where your project starts.
-console.log('Your project is running...');
-// startGame.js
 const {createCard} = require('./src/card.js');
 const deck = require('./src/deck.js');
 const round = require('./src/round.js');
