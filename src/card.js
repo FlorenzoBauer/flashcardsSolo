@@ -9,9 +9,9 @@ function createCard(id, question, answers, correctAnswer) {
 }
 function evaluateGuess(guess, correctAnswer) {
     if (guess === correctAnswer) {
-      return 'correct!';
+      return true
     } else {
-      return 'incorrect!';
+      return false
     }
   }
 

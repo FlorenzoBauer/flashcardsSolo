@@ -1,9 +1,9 @@
+const inquirer = require('inquirer');
 const {createCard} = require('./src/card.js');
 const deck = require('./src/deck.js');
 const round = require('./src/round.js');
 const game = require('./src/game.js');
 const data = require('./src/data.js');
-const util = require('./src/util.js');
 const prototypeQuestions = data.prototypeData;
 
 function start() {

@@ -1,12 +1,4 @@
-function createRound(deck) {
-  return {
-    deck,
-    currentCard: deck.cards[0],
-    turn: 0,
-    incorrectGuesses: [],
-    incorrectCards: []
-  }
-};
+const card = require('../src/card');
 function createRound(deck) {
   return {
     deck,
@@ -18,34 +10,34 @@ function createRound(deck) {
 }
 
 function takeTurn(id, round) {
+  let currentIndex = round.deck.cards.indexOf(round.currentCard);
   round.turn++;
-  const currentIndex = round.deck.cards.indexOf(round.currentCard);
-  const deckSize = round.deck.cards.length + round.incorrectCards.length;
-
-  if (id === round.currentCard.correctAnswer) {
-    const nextIndex = (currentIndex + 1) % deckSize;
-
-    if (nextIndex === round.deck.cards.length && round.incorrectCards.length > 0) {
-      round.deck.cards = [...round.deck.cards, ...round.incorrectCards];
-      round.incorrectCards = [];
-    }
-
-    round.currentCard = round.deck.cards[nextIndex];
-    return 'correct!';
-  } else {
-    round.incorrectGuesses.push(round.currentCard.id);
-    round.incorrectCards.push(round.currentCard);
-
-    if (round.deck.cards.length > 1) {
-      const nextIndex = (currentIndex + 1) % deckSize;
-      round.currentCard = round.deck.cards[nextIndex];
-    } else if (round.incorrectCards.length > 0) {
-      round.deck.cards = [...round.incorrectCards];
-      round.incorrectCards = [];
-      round.currentCard = round.deck.cards[0];
-    }
-
-    return 'incorrect!';
+  currentIndex = (currentIndex + 1) % round.deck.cards.length;
+ 
+  console.log('deck', round.deck.cards.length)
+  if (round.turn === round.deck.cards.length && round.incorrectCards.length === 0) {
+    console.log('End Round', !round.currentCard)
+    return !round.currentCard;
+  }
+  else if (round.turn === round.deck.cards.length && round.incorrectCards.length > 0) {
+    round.deck.cards = [...round.incorrectCards];
+    round.incorrectCards = [];
+    round.turn = 0;
+    currentIndex = 0;
+    round.currentCard = round.deck.cards[currentIndex];
+    return 'Incorrect cards added back to deck.'
+  }
+  let isCorrect = card.evaluateGuess(id, round.currentCard.correctAnswer);
+  console.log('index', currentIndex)
+  console.log('isCorrect', isCorrect)
+  if(isCorrect ===  true){
+    round.currentCard = round.deck.cards[round.turn];
+    return 'correct'
+  }
+  else if(isCorrect === false){
+  round.incorrectCards.push(round.currentCard);
+  round.currentCard = round.deck.cards[round.turn];
+  return 'incorrect'
   }
 }
 
@@ -57,8 +49,15 @@ function calculatePercentCorrect(round) {
     }
     
 function endRound(round) {
-    const percentCorrect = calculatePercentCorrect(round);
+  const percentCorrect = calculatePercentCorrect(round);
+  if (round.turn >= round.deck.cards.length + round.incorrectCards.length) {
     return `** Round over! ** You answered ${percentCorrect}% of the questions correctly!`
+    
+  }
+
+  
+
+    
 }
 
 module.exports = {

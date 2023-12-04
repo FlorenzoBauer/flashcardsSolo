@@ -24,6 +24,12 @@ const getRound = (round) => {
 
 const confirmUpdate = (id, round) => {
   const feedback = takeTurn(id, round);
+  if(feedback === 'Incorrect cards added back to deck.'){
+    return {
+      name: 'feedback',
+      message: `Incorrect cards added back to deck.`
+    }
+  }
   return {
     name: 'feedback',
     message: `Your answer of ${id} is ${feedback}`
