@@ -25,7 +25,7 @@ function takeTurn(id, round) {
     }
     round.deck.cards.splice(0, 1);
     round.currentCard = round.deck.cards[0];
-    return 'correct'
+    return 'correct!'
   }
   else if(isCorrect === false){
     if (round.deck.cards.length === 1 && round.incorrectCards.length > 0) {
@@ -39,7 +39,7 @@ function takeTurn(id, round) {
   round.incorrectGuesses.push(round.currentCard.id);
   round.deck.cards.splice(0, 1);
   round.currentCard = round.deck.cards[0];
-  return 'incorrect'
+  return 'incorrect!'
   }
 }
 
