@@ -13,12 +13,6 @@ function takeTurn(id, round) {
   let currentIndex = round.deck.cards.indexOf(round.currentCard);
   round.turn++;
   currentIndex = (currentIndex + 1) % round.deck.cards.length;
- 
-  console.log('deck', round.deck.cards.length)
-  if (round.currentCard === undefined) {
-    console.log('End Round', round.currentCard)
-    return round.currentCard;
-  }
 
   let isCorrect = card.evaluateGuess(id, round.currentCard.correctAnswer);
   if(isCorrect ===  true){
