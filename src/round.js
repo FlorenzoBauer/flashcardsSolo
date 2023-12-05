@@ -15,32 +15,39 @@ function takeTurn(id, round) {
   currentIndex = (currentIndex + 1) % round.deck.cards.length;
  
   console.log('deck', round.deck.cards.length)
-  if (round.turn === round.deck.cards.length && round.incorrectCards.length === 0) {
-    console.log('End Round', !round.currentCard)
-    return !round.currentCard;
+  if (round.currentCard === undefined) {
+    console.log('End Round', round.currentCard)
+    return round.currentCard;
   }
-  else if (round.turn === round.deck.cards.length && round.incorrectCards.length > 0) {
-    round.deck.cards = [...round.incorrectCards];
-    round.incorrectCards = [];
-    round.turn = 0;
-    currentIndex = 0;
-    round.currentCard = round.deck.cards[currentIndex];
-    return 'Incorrect cards added back to deck.'
-  }
+
   let isCorrect = card.evaluateGuess(id, round.currentCard.correctAnswer);
-  console.log('index', currentIndex)
-  console.log('isCorrect', isCorrect)
   if(isCorrect ===  true){
-    round.currentCard = round.deck.cards[round.turn];
+    if (round.deck.cards.length === 1 && round.incorrectCards.length > 0) {
+      round.deck.cards.splice(0, 1);
+      round.deck.cards = [...round.incorrectCards];
+      round.incorrectCards = [];
+      round.currentCard = round.deck.cards[0];
+      return `correct! You're incorrect cards added back to deck.`
+    }
+    round.deck.cards.splice(0, 1);
+    round.currentCard = round.deck.cards[0];
     return 'correct'
   }
   else if(isCorrect === false){
+    if (round.deck.cards.length === 1 && round.incorrectCards.length > 0) {
+      round.deck.cards.splice(0, 1);
+      round.deck.cards = [...round.incorrectCards];
+      round.incorrectCards = [];
+      round.currentCard = round.deck.cards[0];
+      return `incorrect! You're incorrect cards are being added back to deck.`
+    }
   round.incorrectCards.push(round.currentCard);
-  round.currentCard = round.deck.cards[round.turn];
+  round.incorrectGuesses.push(round.currentCard.id);
+  round.deck.cards.splice(0, 1);
+  round.currentCard = round.deck.cards[0];
   return 'incorrect'
   }
 }
-
 
 function calculatePercentCorrect(round) {
     const correctGuesses = round.turn - round.incorrectGuesses.length;
@@ -50,14 +57,7 @@ function calculatePercentCorrect(round) {
     
 function endRound(round) {
   const percentCorrect = calculatePercentCorrect(round);
-  if (round.turn >= round.deck.cards.length + round.incorrectCards.length) {
     return `** Round over! ** You answered ${percentCorrect}% of the questions correctly!`
-    
-  }
-
-  
-
-    
 }
 
 module.exports = {
